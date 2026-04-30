@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: Naughyfication API
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      responses:
+        "200":
+          description: Health check
+  /metrics:
+    get:
+      responses:
+        "200":
+          description: Prometheus metrics
+  /v1/notify:
+    post:
+      parameters:
+        - in: header
+          name: X-API-Key
+          required: true
+          schema: { type: string }
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [type, to]
+              properties:
+                type: { type: string, example: email }
+                to: { type: string, example: user@example.com }
+                subject: { type: string, example: Welcome }
+                template: { type: string, example: welcome_email }
+                template_body: { type: string, example: "Hi {{name}}" }
+                data: { type: object }
+      responses:
+        "202":
+          description: Notification accepted
+  /v1/notifications:
+    get:
+      responses:
+        "200":
+          description: Notification list
+  /v1/notifications/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Notification detail
+  /v1/webhook:
+    put:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url: { type: string, example: "https://example.com/webhook" }
+      responses:
+        "200":
+          description: Webhook updated
+  /v1/dlq:
+    get:
+      responses:
+        "200":
+          description: Dead letter jobs
+  /v1/dlq/{id}/retry:
+    post:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "202":
+          description: DLQ job requeued

@@ -1,0 +1,45 @@
+# Binaries
+bin/
+dist/
+build/
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go
+coverage.out
+cover.out
+.coverprofile
+vendor/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+tmp/
+
+# Node / frontend
+node_modules/
+.next/
+out/
+
+# Docker
+*.tar
+.docker/
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Misc
+*.swp
+*.swo
