@@ -2,7 +2,10 @@ FROM golang:1.24.1-alpine AS builder
 
 WORKDIR /src
 COPY go.mod go.sum ./
-RUN go mod download
+
+# Retry go mod download to handle transient network errors
+RUN go mod download || go mod download || go mod download
+
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/naughtyfication ./cmd/server
 
